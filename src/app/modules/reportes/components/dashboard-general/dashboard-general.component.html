@@ -1,0 +1,151 @@
+<div class="container-fluid mt-4">
+  <h2 class="mb-4"><i class="bi bi-graph-up me-2"></i>Dashboard - Reportes y Analítica</h2>
+
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+
+  <div *ngIf="!loading">
+    <div class="row mb-4">
+      <!-- Top 5 Enfermedades -->
+      <div class="col-lg-6 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="bi bi-virus me-2"></i>Top 5 Enfermedades Más Tratadas</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Enfermedad</th>
+                    <th>Casos</th>
+                    <th>Sede</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of topEnfermedades">
+                    <td>{{ item.enfermedad }}</td>
+                    <td><strong>{{ item.casos }}</strong></td>
+                    <td><small>{{ item.sede }}</small></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Medicamentos Más Recetados -->
+      <div class="col-lg-6 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-header bg-success text-white">
+            <h5 class="mb-0"><i class="bi bi-capsule me-2"></i>Medicamentos Más Recetados</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Medicamento</th>
+                    <th>Cantidad</th>
+                    <th>Mes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of medicamentosRecetados">
+                    <td>{{ item.medicamento }}</td>
+                    <td><strong>{{ item.cantidad }}</strong></td>
+                    <td><small>{{ item.mes }}</small></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <!-- Médicos con Más Consultas -->
+      <div class="col-lg-6 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-header bg-info text-white">
+            <h5 class="mb-0"><i class="bi bi-person-badge me-2"></i>Médicos con Más Consultas</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Médico</th>
+                    <th>Consultas</th>
+                    <th>Semana</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of medicosTop">
+                    <td>{{ item.medico }}</td>
+                    <td><strong>{{ item.consultas }}</strong></td>
+                    <td><small>{{ item.semana }}</small></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tiempos Promedio de Atención -->
+      <div class="col-lg-6 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-header bg-warning text-dark">
+            <h5 class="mb-0"><i class="bi bi-clock me-2"></i>Tiempos Promedio de Atención</h5>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Sede</th>
+                    <th>Tiempo Promedio</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of tiemposAtencion">
+                    <td>{{ item.sede }}</td>
+                    <td><strong>{{ item.tiempo_promedio }}</strong></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <!-- Total de Pacientes por Sede -->
+      <div class="col-lg-12">
+        <div class="card shadow-sm">
+          <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0"><i class="bi bi-people me-2"></i>Total de Pacientes por Sede</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-3" *ngFor="let item of pacientesPorSede">
+                <div class="card bg-light mb-3">
+                  <div class="card-body text-center">
+                    <h6>{{ item.sede }}</h6>
+                    <h2 class="text-primary">{{ item.total_pacientes }}</h2>
+                    <small class="text-muted">pacientes atendidos</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

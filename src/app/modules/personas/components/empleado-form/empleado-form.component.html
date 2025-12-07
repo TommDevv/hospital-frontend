@@ -1,0 +1,86 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">
+            <i class="bi bi-person-badge me-2"></i>
+            {{ isEditMode ? 'Editar Empleado' : 'Nuevo Empleado' }}
+          </h4>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()" #empleadoForm="ngForm">
+            <div class="mb-3">
+              <label for="documento" class="form-label">Documento *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="documento" 
+                [(ngModel)]="empleado.documento"
+                name="documento"
+                [disabled]="isEditMode"
+                required>
+            </div>
+
+            <div class="mb-3">
+              <label for="id_dept" class="form-label">ID Departamento *</label>
+              <input 
+                type="number" 
+                class="form-control" 
+                id="id_dept" 
+                [(ngModel)]="empleado.id_dept"
+                name="id_dept"
+                required>
+            </div>
+
+            <div class="mb-3">
+              <label for="cargo_id" class="form-label">Cargo *</label>
+              <select 
+                class="form-select" 
+                id="cargo_id" 
+                [(ngModel)]="empleado.cargo_id"
+                name="cargo_id"
+                required>
+                <option *ngFor="let cargo of cargos" [value]="cargo.cargo_id">
+                  {{ cargo.cargo_nombre }}
+                </option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="rol_id" class="form-label">Rol *</label>
+              <select 
+                class="form-select" 
+                id="rol_id" 
+                [(ngModel)]="empleado.rol_id"
+                name="rol_id"
+                required>
+                <option *ngFor="let rol of roles" [value]="rol.rol_id">
+                  {{ rol.rol_nombre }}
+                </option>
+              </select>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button 
+                type="submit" 
+                class="btn btn-primary"
+                [disabled]="!empleadoForm.form.valid || loading">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                <i *ngIf="!loading" class="bi bi-save me-2"></i>
+                {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+              </button>
+              <button 
+                type="button" 
+                class="btn btn-secondary"
+                (click)="cancel()"
+                [disabled]="loading">
+                <i class="bi bi-x-circle me-2"></i>Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

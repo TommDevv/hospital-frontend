@@ -1,0 +1,46 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-building me-2"></i>Sedes Hospitalarias</h2>
+    <a routerLink="/sedes/nueva" class="btn btn-primary">
+      <i class="bi bi-plus-circle me-2"></i>Nueva Sede
+    </a>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && sedes.length === 0" class="alert alert-info">
+    <i class="bi bi-info-circle me-2"></i>No hay sedes registradas.
+  </div>
+
+  <div *ngIf="!loading && sedes.length > 0" class="row">
+    <div *ngFor="let sede of sedes" class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title text-primary">{{ sede.nom_sede }}</h5>
+          <p class="card-text">
+            <strong><i class="bi bi-geo-alt me-2"></i>Ciudad:</strong> {{ sede.ciudad }}<br>
+            <strong><i class="bi bi-pin-map me-2"></i>Dirección:</strong> {{ sede.direccion }}<br>
+            <strong><i class="bi bi-globe me-2"></i>Región ID:</strong> {{ sede.region_id }}
+          </p>
+        </div>
+        <div class="card-footer bg-white border-0">
+          <div class="btn-group w-100" role="group">
+            <a [routerLink]="['/sedes', sede.id_sede]" class="btn btn-sm btn-outline-primary">
+              <i class="bi bi-eye me-1"></i>Ver
+            </a>
+            <a [routerLink]="['/sedes/editar', sede.id_sede]" class="btn btn-sm btn-outline-secondary">
+              <i class="bi bi-pencil me-1"></i>Editar
+            </a>
+            <button (click)="deleteSede(sede.id_sede)" class="btn btn-sm btn-outline-danger">
+              <i class="bi bi-trash me-1"></i>Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

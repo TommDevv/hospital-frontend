@@ -1,0 +1,43 @@
+<div class="container mt-4">
+  <div class="mb-4">
+    <h2><i class="bi bi-shield-check me-2"></i>Auditoría de Accesos</h2>
+    <p class="text-muted">Registro de eventos del sistema</p>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+
+  <div *ngIf="!loading && eventos.length > 0" class="card shadow-sm">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>ID</th>
+              <th>Empleado</th>
+              <th>Acción</th>
+              <th>Tabla Afectada</th>
+              <th>Fecha/Hora</th>
+              <th>IP Origen</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let evento of eventos">
+              <td>{{ evento.id_evento }}</td>
+              <td>Emp #{{ evento.id_emp }}</td>
+              <td>
+                <span class="badge bg-{{ getAccionClass(evento.accion) }}">
+                  {{ evento.accion }}
+                </span>
+              </td>
+              <td>{{ evento.tabla_afectada }}</td>
+              <td>{{ evento.fecha_evento | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+              <td><code>{{ evento.ip_origen }}</code></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

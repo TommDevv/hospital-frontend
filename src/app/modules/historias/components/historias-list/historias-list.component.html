@@ -1,0 +1,41 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-file-medical me-2"></i>Historias Clínicas</h2>
+    <a routerLink="/historias/nueva" class="btn btn-primary">
+      <i class="bi bi-plus-circle me-2"></i>Nueva Historia
+    </a>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && historias.length === 0" class="alert alert-info">
+    <i class="bi bi-info-circle me-2"></i>No hay historias clínicas registradas.
+  </div>
+
+  <div *ngIf="!loading && historias.length > 0" class="row">
+    <div *ngFor="let historia of historias" class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h5 class="mb-0">Historia #{{ historia.cod_hist }}</h5>
+        </div>
+        <div class="card-body">
+          <p><strong><i class="bi bi-calendar3 me-2"></i>Fecha:</strong><br>
+          {{ historia.fecha_registro_hora | date:'dd/MM/yyyy HH:mm' }}</p>
+          <p><strong><i class="bi bi-clipboard-pulse me-2"></i>Diagnóstico:</strong><br>
+          {{ historia.diagnostico }}</p>
+          <p><strong><i class="bi bi-person me-2"></i>Paciente:</strong> #{{ historia.cod_pac }}</p>
+          <p><strong><i class="bi bi-person-badge me-2"></i>Médico:</strong> #{{ historia.id_emp }}</p>
+        </div>
+        <div class="card-footer bg-white">
+          <a [routerLink]="['/historias', historia.cod_hist]" class="btn btn-sm btn-outline-primary w-100">
+            <i class="bi bi-eye me-1"></i>Ver Detalle
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

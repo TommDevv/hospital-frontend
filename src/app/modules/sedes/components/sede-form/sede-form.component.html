@@ -1,0 +1,82 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">
+            <i class="bi bi-building me-2"></i>
+            {{ isEditMode ? 'Editar Sede' : 'Nueva Sede' }}
+          </h4>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()" #sedeForm="ngForm">
+            <div class="mb-3">
+              <label for="nom_sede" class="form-label">Nombre de la Sede *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="nom_sede" 
+                [(ngModel)]="sede.nom_sede"
+                name="nom_sede"
+                required>
+            </div>
+
+            <div class="mb-3">
+              <label for="ciudad" class="form-label">Ciudad *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="ciudad" 
+                [(ngModel)]="sede.ciudad"
+                name="ciudad"
+                required>
+            </div>
+
+            <div class="mb-3">
+              <label for="direccion" class="form-label">Dirección *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="direccion" 
+                [(ngModel)]="sede.direccion"
+                name="direccion"
+                required>
+            </div>
+
+            <div class="mb-3">
+              <label for="region_id" class="form-label">Región *</label>
+              <select 
+                class="form-select" 
+                id="region_id" 
+                [(ngModel)]="sede.region_id"
+                name="region_id"
+                required>
+                <option *ngFor="let region of regiones" [value]="region.region_id">
+                  {{ region.nombre }}
+                </option>
+              </select>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button 
+                type="submit" 
+                class="btn btn-primary"
+                [disabled]="!sedeForm.form.valid || loading">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                <i *ngIf="!loading" class="bi bi-save me-2"></i>
+                {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+              </button>
+              <button 
+                type="button" 
+                class="btn btn-secondary"
+                (click)="cancel()"
+                [disabled]="loading">
+                <i class="bi bi-x-circle me-2"></i>Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

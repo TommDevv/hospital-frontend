@@ -1,0 +1,45 @@
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2><i class="bi bi-gear-wide-connected me-2"></i>Equipamiento Médico</h2>
+    <button class="btn btn-primary">
+      <i class="bi bi-plus-circle me-2"></i>Nuevo Equipo
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status"></div>
+  </div>
+
+  <div *ngIf="!loading && equipamiento.length > 0" class="card shadow-sm">
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table table-hover">
+          <thead class="table-light">
+            <tr>
+              <th>Código</th>
+              <th>Nombre</th>
+              <th>Departamento</th>
+              <th>Estado</th>
+              <th>Último Mantenimiento</th>
+              <th>Responsable</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let equipo of equipamiento">
+              <td><strong>{{ equipo.cod_eq }}</strong></td>
+              <td>{{ equipo.nom_eq }}</td>
+              <td>Depto #{{ equipo.id_dept }}</td>
+              <td>
+                <span class="badge bg-{{ getEstadoClass(equipo.estado) }}">
+                  {{ equipo.estado }}
+                </span>
+              </td>
+              <td>{{ equipo.fecha_mantenimiento | date:'dd/MM/yyyy' }}</td>
+              <td>Emp #{{ equipo.responsable }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

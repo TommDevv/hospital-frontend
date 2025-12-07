@@ -1,0 +1,59 @@
+<div class="container mt-4">
+  <div *ngIf="loading" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && sede">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2><i class="bi bi-building me-2"></i>Detalle de Sede</h2>
+      <button class="btn btn-secondary" (click)="goBack()">
+        <i class="bi bi-arrow-left me-2"></i>Volver
+      </button>
+    </div>
+
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0">{{ sede.nom_sede }}</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <strong><i class="bi bi-hash me-2"></i>ID Sede:</strong>
+            <p class="ms-4">{{ sede.id_sede }}</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <strong><i class="bi bi-geo-alt me-2"></i>Ciudad:</strong>
+            <p class="ms-4">{{ sede.ciudad }}</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <strong><i class="bi bi-pin-map me-2"></i>Dirección:</strong>
+            <p class="ms-4">{{ sede.direccion }}</p>
+          </div>
+          <div class="col-md-6 mb-3">
+            <strong><i class="bi bi-globe me-2"></i>Región ID:</strong>
+            <p class="ms-4">{{ sede.region_id }}</p>
+          </div>
+        </div>
+
+        <hr>
+
+        <h5 class="mt-4 mb-3"><i class="bi bi-telephone me-2"></i>Teléfonos de Contacto</h5>
+        <div *ngIf="telefonos.length === 0" class="alert alert-info">
+          No hay teléfonos registrados para esta sede.
+        </div>
+        <ul class="list-group" *ngIf="telefonos.length > 0">
+          <li *ngFor="let tel of telefonos" class="list-group-item">
+            <i class="bi bi-telephone-fill text-primary me-2"></i>{{ tel.numero }}
+          </li>
+        </ul>
+      </div>
+      <div class="card-footer">
+        <a [routerLink]="['/sedes/editar', sede.id_sede]" class="btn btn-primary">
+          <i class="bi bi-pencil me-2"></i>Editar Sede
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

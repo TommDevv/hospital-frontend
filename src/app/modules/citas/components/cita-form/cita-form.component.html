@@ -1,0 +1,101 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">
+            <i class="bi bi-calendar-check me-2"></i>
+            {{ isEditMode ? 'Editar Cita' : 'Nueva Cita' }}
+          </h4>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()" #citaForm="ngForm">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="cod_pac" class="form-label">Código Paciente *</label>
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  id="cod_pac" 
+                  [(ngModel)]="cita.cod_pac"
+                  name="cod_pac"
+                  required>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="id_emp" class="form-label">ID Médico *</label>
+                <input 
+                  type="number" 
+                  class="form-control" 
+                  id="id_emp" 
+                  [(ngModel)]="cita.id_emp"
+                  name="id_emp"
+                  required>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="fecha_hora" class="form-label">Fecha y Hora *</label>
+                <input 
+                  type="datetime-local" 
+                  class="form-control" 
+                  id="fecha_hora" 
+                  [ngModel]="cita.fecha_hora | date:'yyyy-MM-ddTHH:mm'"
+                  (ngModelChange)="cita.fecha_hora = $event"
+                  name="fecha_hora"
+                  required>
+              </div>
+
+              <div class="col-md-6 mb-3">
+                <label for="cod_servicio" class="form-label">Tipo de Servicio *</label>
+                <select 
+                  class="form-select" 
+                  id="cod_servicio" 
+                  [(ngModel)]="cita.cod_servicio"
+                  name="cod_servicio"
+                  required>
+                  <option *ngFor="let tipo of tiposServicio" [value]="tipo.cod_servicio">
+                    {{ tipo.nombre }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="estado" class="form-label">Estado *</label>
+              <select 
+                class="form-select" 
+                id="estado" 
+                [(ngModel)]="cita.estado"
+                name="estado"
+                required>
+                <option *ngFor="let estado of estadosDisponibles" [value]="estado">
+                  {{ estado }}
+                </option>
+              </select>
+            </div>
+
+            <div class="d-flex gap-2">
+              <button 
+                type="submit" 
+                class="btn btn-primary"
+                [disabled]="!citaForm.form.valid || loading">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                <i *ngIf="!loading" class="bi bi-save me-2"></i>
+                {{ isEditMode ? 'Actualizar' : 'Guardar' }}
+              </button>
+              <button 
+                type="button" 
+                class="btn btn-secondary"
+                (click)="cancel()"
+                [disabled]="loading">
+                <i class="bi bi-x-circle me-2"></i>Cancelar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,62 @@
+<div class="container">
+  <div class="row justify-content-center align-items-center min-vh-100">
+    <div class="col-md-5">
+      <div class="card shadow">
+        <div class="card-body p-5">
+          <div class="text-center mb-4">
+            <h2 class="fw-bold text-primary"> Sistema Hospitalario</h2>
+            <p class="text-muted">Inicio de Sesión - Empleados</p>
+          </div>
+
+          <form (ngSubmit)="onSubmit()">
+            <div class="mb-3">
+              <label for="documento" class="form-label">Número de Documento</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="documento" 
+                [(ngModel)]="documento"
+                name="documento"
+                placeholder="Ingrese su documento"
+                [disabled]="loading"
+                required>
+            </div>
+
+            <div class="mb-3">
+              <label for="password" class="form-label">Contraseña</label>
+              <input 
+                type="password" 
+                class="form-control" 
+                id="password" 
+                [(ngModel)]="password"
+                name="password"
+                placeholder="Ingrese su contraseña"
+                [disabled]="loading"
+                required>
+            </div>
+
+            <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+              <i class="bi bi-exclamation-triangle-fill me-2"></i>{{ errorMessage }}
+            </div>
+
+            <button 
+              type="submit" 
+              class="btn btn-primary w-100 py-2"
+              [disabled]="loading">
+              <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+              {{ loading ? 'Iniciando sesión...' : 'Iniciar Sesión' }}
+            </button>
+          </form>
+
+          <div class="mt-4 p-3 bg-light rounded">
+            <small class="text-muted d-block mb-2"><strong>Usuarios de prueba:</strong></small>
+            <small class="d-block"> Admin: 12345678 / 123456</small>
+            <small class="d-block"> Médico: 87654321 / 123456</small>
+            <small class="d-block"> Enfermero: 11223344 / 123456</small>
+            <small class="d-block"> Administrativo: 44332211 / 123456</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
