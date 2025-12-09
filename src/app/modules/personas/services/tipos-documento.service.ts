@@ -1,21 +1,25 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
 import { TipoDocumento } from '../../../models/persona.model';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TiposDocumentoService {
-  private tiposDocumento: TipoDocumento[] = [
-    { tipo_doc_id: 1, tipo_doc_nombre: 'Cédula de Ciudadanía' },
-    { tipo_doc_id: 2, tipo_doc_nombre: 'Tarjeta de Identidad' },
-    { tipo_doc_id: 3, tipo_doc_nombre: 'Cédula de Extranjería' },
-    { tipo_doc_id: 4, tipo_doc_nombre: 'Pasaporte' }
-  ];
+  private readonly baseUrl = `${environment.apiUrl}/tipos-documento`;
 
-  constructor() { }
+  constructor(private http: HttpClient) {}
 
   getTiposDocumento(): Observable<TipoDocumento[]> {
-    return of(this.tiposDocumento);
+    return this.http.get<any[]>(`${this.baseUrl}/`).pipe(
+      map(items =>
+        items.map(item => ({
+          tipo_doc_id: item.tipo_doc_id,
+          tipo_doc_nombre: item.nombre
+        }))
+      )
+    );
   }
 }

@@ -1,21 +1,25 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
 import { Rol } from '../../../models/empleado.model';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RolesService {
-  private roles: Rol[] = [
-    { rol_id: 1, rol_nombre: 'Administrador' },
-    { rol_id: 2, rol_nombre: 'Médico' },
-    { rol_id: 3, rol_nombre: 'Enfermero' },
-    { rol_id: 4, rol_nombre: 'Administrativo' }
-  ];
+  private readonly baseUrl = `${environment.apiUrl}/roles`;
 
-  constructor() { }
+  constructor(private http: HttpClient) {}
 
   getRoles(): Observable<Rol[]> {
-    return of(this.roles);
+    return this.http.get<any[]>(`${this.baseUrl}/`).pipe(
+      map(items =>
+        items.map(item => ({
+          rol_id: item.rol_id,
+          rol_nombre: item.nombre
+        }))
+      )
+    );
   }
 }

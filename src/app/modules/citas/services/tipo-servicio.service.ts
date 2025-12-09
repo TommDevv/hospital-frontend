@@ -1,22 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { TipoServicio } from '../../../models/cita.model';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TipoServicioService {
-  private tiposServicio: TipoServicio[] = [
-    { cod_servicio: 1, nombre: 'Consulta General' },
-    { cod_servicio: 2, nombre: 'Urgencias' },
-    { cod_servicio: 3, nombre: 'Especialista' },
-    { cod_servicio: 4, nombre: 'Control' },
-    { cod_servicio: 5, nombre: 'Exámenes' }
-  ];
+  private readonly baseUrl = `${environment.apiUrl}/tipos-servicio`;
 
-  constructor() { }
+  constructor(private http: HttpClient) {}
 
   getTiposServicio(): Observable<TipoServicio[]> {
-    return of(this.tiposServicio);
+    return this.http.get<TipoServicio[]>(`${this.baseUrl}/`);
   }
 }

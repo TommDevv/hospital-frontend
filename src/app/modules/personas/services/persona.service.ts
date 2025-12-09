@@ -1,83 +1,61 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { Persona, TipoDocumento } from '../../../models/persona.model';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import { Persona } from '../../../models/persona.model';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PersonaService {
-  private personas: Persona[] = [
-    { 
-      documento: '12345678', 
-      tipo_doc_id: 1, 
-      nombre: 'Juan Pérez García', 
-      direccion: 'Calle 50 #25-30', 
-      fecha_nac: new Date('1985-03-15'), 
-      genero: 'M', 
-      correo: 'juan.perez@email.com', 
-      id_sede: 1 
-    },
-    { 
-      documento: '87654321', 
-      tipo_doc_id: 1, 
-      nombre: 'María García López', 
-      direccion: 'Carrera 30 #45-20', 
-      fecha_nac: new Date('1990-07-22'), 
-      genero: 'F', 
-      correo: 'maria.garcia@email.com', 
-      id_sede: 2 
-    },
-    { 
-      documento: '11223344', 
-      tipo_doc_id: 1, 
-      nombre: 'Carlos López Martínez', 
-      direccion: 'Avenida 15 #20-10', 
-      fecha_nac: new Date('1988-11-05'), 
-      genero: 'M', 
-      correo: 'carlos.lopez@email.com', 
-      id_sede: 1 
-    },
-    { 
-      documento: '99887766', 
-      tipo_doc_id: 1, 
-      nombre: 'Ana Torres Ruiz', 
-      direccion: 'Calle 80 #35-15', 
-      fecha_nac: new Date('1995-02-18'), 
-      genero: 'F', 
-      correo: 'ana.torres@email.com', 
-      id_sede: 3 
-    }
-  ];
+  private readonly baseUrl = `${environment.apiUrl}/personas`;
 
-  constructor() { }
+  constructor(private http: HttpClient) {}
 
   getPersonas(): Observable<Persona[]> {
-    return of(this.personas);
+    return this.http.get<any[]>(`${this.baseUrl}/`).pipe(map(items => items.map(this.mapFromApi)));
   }
 
-  getPersonaByDocumento(documento: string): Observable<Persona | undefined> {
-    return of(this.personas.find(p => p.documento === documento));
+  getPersonaByDocumento(documento: string): Observable<Persona> {
+    return this.http.get<any>(`${this.baseUrl}/${documento}/`).pipe(map(this.mapFromApi));
   }
 
   createPersona(persona: Persona): Observable<Persona> {
-    this.personas.push(persona);
-    return of(persona);
+    return this.http
+      .post<any>(`${this.baseUrl}/`, this.mapToApi(persona))
+      .pipe(map(this.mapFromApi));
   }
 
   updatePersona(persona: Persona): Observable<Persona> {
-    const index = this.personas.findIndex(p => p.documento === persona.documento);
-    if (index !== -1) {
-      this.personas[index] = persona;
-    }
-    return of(persona);
+    return this.http
+      .put<any>(`${this.baseUrl}/${persona.documento}/`, this.mapToApi(persona))
+      .pipe(map(this.mapFromApi));
   }
 
-  deletePersona(documento: string): Observable<boolean> {
-    const index = this.personas.findIndex(p => p.documento === documento);
-    if (index !== -1) {
-      this.personas.splice(index, 1);
-      return of(true);
-    }
-    return of(false);
+  deletePersona(documento: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${documento}/`);
   }
+
+  private mapFromApi = (api: any): Persona => ({
+    documento: api.documento,
+    tipo_doc_id: api.tipo_doc_id ?? api.tipo_doc?.tipo_doc_id,
+    nombre: api.nom_persona ?? api.nombre,
+    direccion: api.dir_per ?? api.direccion,
+    fecha_nac: api.fecha_nac ? new Date(api.fecha_nac) : undefined as any,
+    genero: api.genero,
+    correo: api.correo_per ?? api.correo,
+    id_sede: api.id_sede_id ?? api.id_sede?.id_sede,
+    tipo_documento: api.tipo_doc,
+  });
+
+  private mapToApi = (persona: Persona) => ({
+    documento: persona.documento,
+    nom_persona: persona.nombre,
+    fecha_nac: persona.fecha_nac,
+    genero: persona.genero,
+    dir_per: persona.direccion,
+    correo_per: persona.correo,
+    tipo_doc_id: persona.tipo_doc_id,
+    id_sede_id: persona.id_sede,
+  });
 }

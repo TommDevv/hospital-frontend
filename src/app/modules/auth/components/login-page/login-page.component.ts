@@ -30,27 +30,31 @@ export class LoginPageComponent {
     this.authService.login(this.documento, this.password).subscribe({
       next: (response) => {
         this.loading = false;
-        if (response.success) {
-          // Redirigir según rol
-          const role = response.user.rol;
-          switch (role) {
-            case 'Administrador':
-              this.router.navigate(['/dashboard']);
-              break;
-            case 'Médico':
-              this.router.navigate(['/citas']);
-              break;
-            case 'Enfermero':
-              this.router.navigate(['/historias']);
-              break;
-            case 'Administrativo':
-              this.router.navigate(['/pacientes']);
-              break;
-            default:
-              this.router.navigate(['/dashboard']);
-          }
-        } else {
-          this.errorMessage = response.error;
+        // En algunos casos el backend puede no enviar `success`; asumimos éxito si hay usuario/token y no viene `error` explícito.
+        const hasError = (response as any)?.success === false || (response as any)?.error;
+        if (hasError) {
+          this.errorMessage = (response as any)['error'] || 'Credenciales incorrectas';
+          return;
+        }
+
+        const user = (response as any)?.empleado ?? (response as any)?.user ?? response;
+        const role = user?.rol?.nombre ?? user?.rol ?? (response as any)?.rol;
+
+        switch (role) {
+          case 'Administrador':
+            this.router.navigate(['/dashboard']);
+            break;
+          case 'Médico':
+            this.router.navigate(['/citas']);
+            break;
+          case 'Enfermero':
+            this.router.navigate(['/historias']);
+            break;
+          case 'Administrativo':
+            this.router.navigate(['/pacientes']);
+            break;
+          default:
+            this.router.navigate(['/dashboard']);
         }
       },
       error: () => {

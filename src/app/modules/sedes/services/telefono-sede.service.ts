@@ -1,36 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { TelefonoSede } from '../../../models/sede.model';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TelefonoSedeService {
-  private telefonos: TelefonoSede[] = [
-    { id_sede: 1, numero: '601-2345678' },
-    { id_sede: 1, numero: '601-2345679' },
-    { id_sede: 2, numero: '604-3456789' },
-    { id_sede: 3, numero: '602-4567890' },
-    { id_sede: 4, numero: '607-5678901' }
-  ];
+  private readonly baseUrl = `${environment.apiUrl}/sedes`;
 
-  constructor() { }
+  constructor(private http: HttpClient) {}
 
   getTelefonosBySede(id_sede: number): Observable<TelefonoSede[]> {
-    return of(this.telefonos.filter(t => t.id_sede === id_sede));
+    return this.http.get<TelefonoSede[]>(`${this.baseUrl}/${id_sede}/telefonos/`);
   }
 
   addTelefono(telefono: TelefonoSede): Observable<TelefonoSede> {
-    this.telefonos.push(telefono);
-    return of(telefono);
+    return this.http.post<TelefonoSede>(`${this.baseUrl}/${telefono.id_sede}/telefonos/`, telefono);
   }
 
-  deleteTelefono(id_sede: number, numero: string): Observable<boolean> {
-    const index = this.telefonos.findIndex(t => t.id_sede === id_sede && t.numero === numero);
-    if (index !== -1) {
-      this.telefonos.splice(index, 1);
-      return of(true);
-    }
-    return of(false);
+  deleteTelefono(id_sede: number, numero: string): Observable<void> {
+    const params = new HttpParams().set('numero', numero);
+    return this.http.delete<void>(`${this.baseUrl}/${id_sede}/telefonos/`, { params });
   }
 }

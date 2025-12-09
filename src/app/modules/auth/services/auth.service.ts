@@ -1,6 +1,21 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { environment } from '../../../../environments/environment';
+
+interface LoginPayload {
+  documento: string;
+  password: string;
+}
+
+interface LoginResponse {
+  token?: string;
+  empleado?: any;
+  user?: any;
+  rol?: string;
+  [key: string]: any;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -8,33 +23,36 @@ import { delay } from 'rxjs/operators';
 export class AuthService {
   private currentUser: any = null;
   private readonly STORAGE_KEY = 'currentUser';
+  private readonly baseUrl = environment.apiUrl;
 
-  constructor() {
+  constructor(private http: HttpClient) {
     const stored = localStorage.getItem(this.STORAGE_KEY);
     if (stored) {
       this.currentUser = JSON.parse(stored);
     }
   }
 
-  login(documento: string, password: string): Observable<any> {
-    // Simulación de login con datos de prueba
-    const mockUsers = [
-      { documento: '12345678', password: '123456', rol: 'Administrador', nombre: 'Juan Pérez', id_emp: 1 },
-      { documento: '87654321', password: '123456', rol: 'Médico', nombre: 'María García', id_emp: 2 },
-      { documento: '11223344', password: '123456', rol: 'Enfermero', nombre: 'Carlos López', id_emp: 3 },
-      { documento: '44332211', password: '123456', rol: 'Administrativo', nombre: 'Ana Torres', id_emp: 4 }
-    ];
+  login(documento: string, password: string): Observable<LoginResponse> {
+    const payload: LoginPayload = { documento, password };
 
-    const user = mockUsers.find(u => u.documento === documento && u.password === password);
+    return this.http.post<LoginResponse>(`${this.baseUrl}/login/`, payload).pipe(
+      tap(response => {
+        if (!response) {
+          return;
+        }
 
-    if (user) {
-      const { password, ...userWithoutPassword } = user;
-      this.currentUser = userWithoutPassword;
-      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(userWithoutPassword));
-      return of({ success: true, user: userWithoutPassword }).pipe(delay(500));
-    } else {
-      return of({ success: false, error: 'Credenciales incorrectas' }).pipe(delay(500));
-    }
+        const userData = response.empleado ?? response.user ?? response;
+        this.currentUser = userData;
+
+        const payloadToStore = {
+          ...userData,
+          token: response.token,
+          rol: userData?.rol?.nombre ?? userData?.rol ?? response.rol,
+        };
+
+        localStorage.setItem(this.STORAGE_KEY, JSON.stringify(payloadToStore));
+      })
+    );
   }
 
   logout(): void {

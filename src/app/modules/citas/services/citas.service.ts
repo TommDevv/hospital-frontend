@@ -1,76 +1,58 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { Cita, TipoServicio } from '../../../models/cita.model';
+import { HttpClient } from '@angular/common/http';
+import { Observable, map } from 'rxjs';
+import { Cita } from '../../../models/cita.model';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CitasService {
-  private citas: Cita[] = [
-    { 
-      id_cita: 1, 
-      cod_pac: 1, 
-      id_emp: 2, 
-      fecha_hora: new Date('2024-12-10T09:00:00'), 
-      cod_servicio: 1, 
-      estado: 'tomada' 
-    },
-    { 
-      id_cita: 2, 
-      cod_pac: 2, 
-      id_emp: 2, 
-      fecha_hora: new Date('2024-12-10T10:30:00'), 
-      cod_servicio: 2, 
-      estado: 'en desarrollo' 
-    },
-    { 
-      id_cita: 3, 
-      cod_pac: 3, 
-      id_emp: 5, 
-      fecha_hora: new Date('2024-12-11T14:00:00'), 
-      cod_servicio: 1, 
-      estado: 'aplazada' 
-    },
-    { 
-      id_cita: 4, 
-      cod_pac: 4, 
-      id_emp: 2, 
-      fecha_hora: new Date('2024-12-12T11:00:00'), 
-      cod_servicio: 3, 
-      estado: 'tomada' 
-    }
-  ];
+  private readonly baseUrl = `${environment.apiUrl}/citas`;
 
-  constructor() { }
+  constructor(private http: HttpClient) {}
 
   getCitas(): Observable<Cita[]> {
-    return of(this.citas);
+    return this.http.get<any[]>(`${this.baseUrl}/`).pipe(map(items => items.map(this.mapFromApi)));
   }
 
-  getCitaById(id: number): Observable<Cita | undefined> {
-    return of(this.citas.find(c => c.id_cita === id));
+  getCitaById(id: number): Observable<Cita> {
+    return this.http.get<any>(`${this.baseUrl}/${id}/`).pipe(map(this.mapFromApi));
   }
 
   createCita(cita: Cita): Observable<Cita> {
-    const newCita = { ...cita, id_cita: this.citas.length + 1 };
-    this.citas.push(newCita);
-    return of(newCita);
+    return this.http
+      .post<any>(`${this.baseUrl}/`, this.mapToApi(cita))
+      .pipe(map(this.mapFromApi));
   }
 
   updateCita(cita: Cita): Observable<Cita> {
-    const index = this.citas.findIndex(c => c.id_cita === cita.id_cita);
-    if (index !== -1) {
-      this.citas[index] = cita;
-    }
-    return of(cita);
+    return this.http
+      .put<any>(`${this.baseUrl}/${cita.id_cita}/`, this.mapToApi(cita))
+      .pipe(map(this.mapFromApi));
   }
 
-  deleteCita(id: number): Observable<boolean> {
-    const index = this.citas.findIndex(c => c.id_cita === id);
-    if (index !== -1) {
-      this.citas.splice(index, 1);
-      return of(true);
-    }
-    return of(false);
+  deleteCita(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}/`);
   }
+
+  private mapFromApi = (api: any): Cita => ({
+    id_cita: api.id_cita,
+    cod_pac: api.cod_pac_id ?? api.cod_pac?.cod_pac ?? api.cod_pac,
+    id_emp: api.id_emp_id ?? api.id_emp?.id_emp ?? api.id_emp,
+    fecha_hora: api.fecha_hora ? new Date(api.fecha_hora) : undefined as any,
+    cod_servicio: api.cod_servicio_id ?? api.cod_servicio?.cod_servicio ?? api.cod_servicio,
+    estado: api.estado,
+    paciente: api.cod_pac,
+    medico: api.id_emp,
+    tipo_servicio: api.cod_servicio,
+  });
+
+  private mapToApi = (cita: Cita) => ({
+    cod_pac_id: cita.cod_pac,
+    id_emp_id: cita.id_emp,
+    cod_servicio_id: cita.cod_servicio,
+    fecha_hora: cita.fecha_hora,
+    estado: cita.estado,
+  });
 }
