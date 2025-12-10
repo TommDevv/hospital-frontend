@@ -23,6 +23,7 @@
           <thead class="table-light">
             <tr>
               <th>Código Paciente</th>
+              <th>Nombre</th>
               <th>Documento</th>
               <th class="text-center">Acciones</th>
             </tr>
@@ -30,6 +31,7 @@
           <tbody>
             <tr *ngFor="let paciente of pacientes">
               <td><strong>{{ paciente.cod_pac }}</strong></td>
+              <td>{{ paciente.persona?.nombre || '-' }}</td>
               <td>{{ paciente.documento }}</td>
               <td class="text-center">
                 <div class="btn-group btn-group-sm" role="group">

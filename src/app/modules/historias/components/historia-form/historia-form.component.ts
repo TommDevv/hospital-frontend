@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { HistoriaClinica } from '../../../../models/historia-clinica.model';
 import { HistoriaService } from '../../services/historia.service';
 
@@ -17,13 +17,38 @@ export class HistoriaFormComponent implements OnInit {
     id_emp: 1
   };
   loading: boolean = false;
+  isViewMode: boolean = false;
 
   constructor(
     private historiaService: HistoriaService,
     private router: Router
+    ,private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {}
+
+  ngAfterViewInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+    if (id) {
+      this.isViewMode = true;
+      this.loadHistoria(Number(id));
+    }
+  }
+
+  loadHistoria(id: number): void {
+    this.loading = true;
+    this.historiaService.getHistoriaById(id).subscribe({
+      next: (data) => {
+        if (data) {
+          this.historia = data;
+        }
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+      }
+    });
+  }
 
   onSubmit(): void {
     this.loading = true;

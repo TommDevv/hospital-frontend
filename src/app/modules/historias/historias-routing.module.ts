@@ -6,6 +6,7 @@ import { HistoriaFormComponent } from './components/historia-form/historia-form.
 const routes: Routes = [
   { path: '', component: HistoriasListComponent },
   { path: 'nueva', component: HistoriaFormComponent }
+  ,{ path: ':id', component: HistoriaFormComponent }
 ];
 
 @NgModule({

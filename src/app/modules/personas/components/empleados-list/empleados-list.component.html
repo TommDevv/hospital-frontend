@@ -23,6 +23,7 @@
           <thead class="table-light">
             <tr>
               <th>ID</th>
+              <th>Nombre</th>
               <th>Documento</th>
               <th>Departamento</th>
               <th>Cargo</th>
@@ -33,6 +34,7 @@
           <tbody>
             <tr *ngFor="let empleado of empleados">
               <td>{{ empleado.id_emp }}</td>
+              <td>{{ empleado.persona?.nombre || '-' }}</td>
               <td>{{ empleado.documento }}</td>
               <td>{{ empleado.id_dept }}</td>
               <td>{{ empleado.cargo_id }}</td>

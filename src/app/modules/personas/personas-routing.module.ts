@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: 'empleados', component: EmpleadosListComponent },
   { path: 'empleados/nuevo', component: EmpleadoFormComponent },
   { path: 'empleados/editar/:id', component: EmpleadoFormComponent },
+  { path: 'empleados/:id', component: EmpleadoFormComponent },
   { path: 'pacientes', component: PacientesListComponent },
   { path: 'pacientes/nuevo', component: PacienteFormComponent },
   { path: 'pacientes/editar/:id', component: PacienteFormComponent }

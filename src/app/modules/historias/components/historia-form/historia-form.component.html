@@ -10,20 +10,20 @@
             <div class="mb-3">
               <label for="cod_pac" class="form-label">Código Paciente *</label>
               <input type="number" class="form-control" id="cod_pac" 
-                [(ngModel)]="historia.cod_pac" name="cod_pac" required>
+                [(ngModel)]="historia.cod_pac" name="cod_pac" required [disabled]="isViewMode">
             </div>
             <div class="mb-3">
               <label for="id_emp" class="form-label">ID Médico *</label>
               <input type="number" class="form-control" id="id_emp" 
-                [(ngModel)]="historia.id_emp" name="id_emp" required>
+                [(ngModel)]="historia.id_emp" name="id_emp" required [disabled]="isViewMode">
             </div>
             <div class="mb-3">
               <label for="diagnostico" class="form-label">Diagnóstico *</label>
               <textarea class="form-control" id="diagnostico" rows="4"
-                [(ngModel)]="historia.diagnostico" name="diagnostico" required></textarea>
+                [(ngModel)]="historia.diagnostico" name="diagnostico" required [disabled]="isViewMode"></textarea>
             </div>
             <div class="d-flex gap-2">
-              <button type="submit" class="btn btn-primary" 
+              <button *ngIf="!isViewMode" type="submit" class="btn btn-primary" 
                 [disabled]="!historiaForm.form.valid || loading">
                 <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
                 <i *ngIf="!loading" class="bi bi-save me-2"></i>Guardar
