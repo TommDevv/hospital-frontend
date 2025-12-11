@@ -35,13 +35,13 @@
               <td>{{ paciente.documento }}</td>
               <td class="text-center">
                 <div class="btn-group btn-group-sm" role="group">
-                  <a [routerLink]="['/personas/pacientes', paciente.cod_pac]" class="btn btn-outline-primary">
+                  <!-- <a [routerLink]="['/personas/pacientes', paciente.cod_pac]" class="btn btn-outline-primary" title="Ver detalle">
                     <i class="bi bi-eye"></i> Ver
-                  </a>
-                  <a [routerLink]="['/personas/pacientes/editar', paciente.cod_pac]" class="btn btn-outline-secondary">
+                  </a> -->
+                  <a [routerLink]="['/personas/pacientes/editar', paciente.cod_pac]" class="btn btn-outline-secondary" title="Editar paciente">
                     <i class="bi bi-pencil"></i> Editar
                   </a>
-                  <button (click)="deletePaciente(paciente.cod_pac)" class="btn btn-outline-danger">
+                  <button (click)="deletePaciente(paciente.cod_pac)" class="btn btn-outline-danger" title="Eliminar paciente">
                     <i class="bi bi-trash"></i> Eliminar
                   </button>
                 </div>

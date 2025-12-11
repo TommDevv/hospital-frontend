@@ -43,9 +43,9 @@ export class CitasService {
     fecha_hora: api.fecha_hora ? new Date(api.fecha_hora) : undefined as any,
     cod_servicio: api.cod_servicio_id ?? api.cod_servicio?.cod_servicio ?? api.cod_servicio,
     estado: api.estado,
-    paciente: api.cod_pac,
-    medico: api.id_emp,
-    tipo_servicio: api.cod_servicio,
+    paciente: api.cod_pac?.documento?.nom_persona || api.cod_pac?.documento?.nombre || api.cod_pac,
+    medico: api.id_emp?.documento?.nom_persona || api.id_emp?.documento?.nombre || api.id_emp,
+    tipo_servicio: api.cod_servicio?.nombre || api.cod_servicio,
   });
 
   private mapToApi = (cita: Cita) => ({

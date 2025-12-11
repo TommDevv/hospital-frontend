@@ -27,8 +27,8 @@
           {{ historia.fecha_registro_hora | date:'dd/MM/yyyy HH:mm' }}</p>
           <p><strong><i class="bi bi-clipboard-pulse me-2"></i>Diagnóstico:</strong><br>
           {{ historia.diagnostico }}</p>
-          <p><strong><i class="bi bi-person me-2"></i>Paciente:</strong> #{{ historia.cod_pac }}</p>
-          <p><strong><i class="bi bi-person-badge me-2"></i>Médico:</strong> #{{ historia.id_emp }}</p>
+          <p><strong><i class="bi bi-person me-2"></i>Paciente:</strong> {{ historia.paciente || 'N/A' }}</p>
+          <p><strong><i class="bi bi-person-badge me-2"></i>Médico:</strong> {{ historia.empleado || 'N/A' }}</p>
         </div>
         <div class="card-footer bg-white">
           <a [routerLink]="['/historias', historia.cod_hist]" class="btn btn-sm btn-outline-primary w-100">

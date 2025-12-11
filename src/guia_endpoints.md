@@ -164,7 +164,10 @@ Respuesta:
 
 
 🟦 5. /pacientes/<int:cod_pac>
+
 🔹 GET — Consultar paciente por ID
+Descripción:
+ Obtiene un paciente junto con su información básica de persona.
 Ejemplo de respuesta:
 {
   "cod_pac": 502,
@@ -174,4 +177,57 @@ Ejemplo de respuesta:
     "nombre": "Ana Gómez"
   }
 }
+
+
+🔹 PUT — Editar información de la persona asociada al paciente
+Descripción:
+ Permite actualizar uno o más campos del registro en la tabla personas que está vinculada al paciente.
+Campos editables:
+nombre (nom_persona)
+
+
+fecha_nac
+
+
+genero
+
+
+direccion (dir_per)
+
+
+correo (correo_per)
+
+
+tipo_doc_id
+
+
+id_sede
+
+
+Ejemplo de body:
+{
+  "persona": {
+    "nombre": "Ana Gómez Actualizada",
+    "correo": "ana.actualizada@example.com",
+    "direccion": "Nueva dirección 456"
+  }
+}
+
+Ejemplo de respuesta:
+{
+  "mensaje": "Paciente actualizado correctamente"
+}
+
+
+🔹 DELETE — Eliminar paciente por ID
+Descripción:
+ Elimina solo el registro en la tabla pacientes.
+ (No elimina la persona, a menos que se indique lo contrario.)
+Ejemplo de respuesta:
+{
+  "mensaje": "Paciente eliminado correctamente",
+  "cod_pac": 502,
+  "documento": "87654321"
+}
+
 

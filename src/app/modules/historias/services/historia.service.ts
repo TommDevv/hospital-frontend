@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { HistoriaClinica } from '../../../models/historia-clinica.model';
 import { environment } from '../../../../environments/environment';
 
@@ -14,7 +14,17 @@ export class HistoriaService {
   constructor(private http: HttpClient) {}
 
   getHistorias(): Observable<HistoriaClinica[]> {
-    return this.http.get<HistoriaClinica[]>(`${this.baseListUrl}/`);
+    return this.http.get<any[]>(`${this.baseListUrl}/`).pipe(
+      map(items => items.map(item => ({
+        cod_hist: item.cod_hist,
+        fecha_registro_hora: item.fecha_registro_hora ? new Date(item.fecha_registro_hora) : undefined as any,
+        diagnostico: item.diagnostico,
+        cod_pac: item.cod_pac,
+        id_emp: item.id_emp,
+        paciente: item.paciente,
+        empleado: item.empleado
+      })))
+    );
   }
 
   getHistoriaById(id: number): Observable<HistoriaClinica> {

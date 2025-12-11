@@ -78,7 +78,7 @@ export class PacienteFormComponent implements OnInit {
               tipo_doc_id: data.persona.tipo_doc_id || 1,
               nombre: data.persona.nombre || '',
               direccion: data.persona.direccion || '',
-              fecha_nac: data.persona.fecha_nac || new Date(),
+              fecha_nac: data.persona.fecha_nac ? new Date(data.persona.fecha_nac) : new Date(),
               genero: data.persona.genero || 'M',
               correo: data.persona.correo || '',
               id_sede: data.persona.id_sede || 1

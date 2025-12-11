@@ -37,7 +37,7 @@ export class PacienteService {
   private mapFromApi = (api: any): Paciente => ({
     cod_pac: api.cod_pac,
     documento: api.documento_id ?? api.documento?.documento ?? api.documento,
-    persona: api.documento,
+    persona: api.persona || api.documento,
   });
 
   private mapToApi = (paciente: Paciente) => ({

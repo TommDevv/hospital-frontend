@@ -34,10 +34,10 @@
           <tbody>
             <tr *ngFor="let cita of citas">
               <td><strong>{{ cita.id_cita }}</strong></td>
-              <td>Paciente #{{ cita.cod_pac }}</td>
-              <td>Dr. Emp #{{ cita.id_emp }}</td>
+              <td>{{ cita.paciente || 'N/A' }}</td>
+              <td>{{ cita.medico || 'N/A' }}</td>
               <td>{{ cita.fecha_hora | date:'dd/MM/yyyy HH:mm' }}</td>
-              <td>Servicio #{{ cita.cod_servicio }}</td>
+              <td>{{ cita.tipo_servicio || 'N/A' }}</td>
               <td>
                 <span class="badge bg-{{ getEstadoClass(cita.estado) }}">
                   {{ cita.estado }}
@@ -45,14 +45,14 @@
               </td>
               <td class="text-center">
                 <div class="btn-group btn-group-sm" role="group">
-                  <a [routerLink]="['/citas', cita.id_cita]" class="btn btn-outline-primary">
-                    <i class="bi bi-eye"></i>
+                  <a [routerLink]="['/citas', cita.id_cita]" class="btn btn-outline-primary" title="Ver detalle">
+                    <i class="bi bi-eye"></i> Ver
                   </a>
-                  <a [routerLink]="['/citas/editar', cita.id_cita]" class="btn btn-outline-secondary">
-                    <i class="bi bi-pencil"></i>
+                  <a [routerLink]="['/citas/editar', cita.id_cita]" class="btn btn-outline-secondary" title="Editar cita">
+                    <i class="bi bi-pencil"></i> Editar
                   </a>
-                  <button (click)="deleteCita(cita.id_cita)" class="btn btn-outline-danger">
-                    <i class="bi bi-trash"></i>
+                  <button (click)="deleteCita(cita.id_cita)" class="btn btn-outline-danger" title="Eliminar cita">
+                    <i class="bi bi-trash"></i> Eliminar
                   </button>
                 </div>
               </td>

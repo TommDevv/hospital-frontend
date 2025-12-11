@@ -4,4 +4,6 @@ export interface HistoriaClinica {
   diagnostico: string;
   cod_pac?: number;
   id_emp?: number;
+  paciente?: string;
+  empleado?: string;
 }
