@@ -28,14 +28,14 @@
             <tr *ngFor="let equipo of equipamiento">
               <td><strong>{{ equipo.cod_eq }}</strong></td>
               <td>{{ equipo.nom_eq }}</td>
-              <td>Depto #{{ equipo.id_dept }}</td>
+              <td>{{ equipo.departamento || equipo.id_dept }}</td>
               <td>
                 <span class="badge bg-{{ getEstadoClass(equipo.estado) }}">
                   {{ equipo.estado }}
                 </span>
               </td>
               <td>{{ equipo.fecha_mantenimiento | date:'dd/MM/yyyy' }}</td>
-              <td>Emp #{{ equipo.responsable }}</td>
+              <td>{{ equipo.responsable_nombre || equipo.responsable }}</td>
             </tr>
           </tbody>
         </table>

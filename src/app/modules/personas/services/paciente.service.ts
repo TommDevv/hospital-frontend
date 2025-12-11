@@ -20,16 +20,14 @@ export class PacienteService {
     return this.http.get<any>(`${this.baseUrl}/${id}/`).pipe(map(this.mapFromApi));
   }
 
-  createPaciente(paciente: Paciente): Observable<Paciente> {
-    return this.http
-      .post<any>(`${this.baseUrl}/`, this.mapToApi(paciente))
-      .pipe(map(this.mapFromApi));
+  createPaciente(payload: any): Observable<any> {
+    // El payload ya viene con { persona: {...} }
+    return this.http.post<any>(`${this.baseUrl}/`, payload);
   }
 
-  updatePaciente(paciente: Paciente): Observable<Paciente> {
-    return this.http
-      .put<any>(`${this.baseUrl}/${paciente.cod_pac}/`, this.mapToApi(paciente))
-      .pipe(map(this.mapFromApi));
+  updatePaciente(id: number, payload: any): Observable<any> {
+    // El payload es solo datos de persona a actualizar
+    return this.http.put<any>(`${this.baseUrl}/${id}/`, payload);
   }
 
   deletePaciente(id: number): Observable<void> {

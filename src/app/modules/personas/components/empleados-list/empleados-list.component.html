@@ -37,20 +37,20 @@
               <td>{{ empleado.persona?.nombre || '-' }}</td>
               <td>{{ empleado.documento }}</td>
               <td>{{ empleado.id_dept }}</td>
-              <td>{{ empleado.cargo_id }}</td>
+              <td>{{ empleado.cargo?.cargo_nombre || empleado.cargo_id }}</td>
               <td>
-                <span class="badge bg-primary">{{ empleado.rol_id }}</span>
+                <span class="badge bg-primary">{{ empleado.rol?.rol_nombre || empleado.rol_id }}</span>
               </td>
               <td class="text-center">
                 <div class="btn-group btn-group-sm" role="group">
-                  <a [routerLink]="['/personas/empleados', empleado.id_emp]" class="btn btn-outline-primary">
-                    <i class="bi bi-eye"></i>
+                  <a [routerLink]="['/personas/empleados', empleado.id_emp]" class="btn btn-outline-primary" title="Ver detalle">
+                    <i class="bi bi-eye"></i> Ver
                   </a>
-                  <a [routerLink]="['/personas/empleados/editar', empleado.id_emp]" class="btn btn-outline-secondary">
-                    <i class="bi bi-pencil"></i>
+                  <a [routerLink]="['/personas/empleados/editar', empleado.id_emp]" class="btn btn-outline-secondary" title="Editar empleado">
+                    <i class="bi bi-pencil"></i> Editar
                   </a>
-                  <button (click)="deleteEmpleado(empleado.id_emp)" class="btn btn-outline-danger">
-                    <i class="bi bi-trash"></i>
+                  <button (click)="deleteEmpleado(empleado.id_emp)" class="btn btn-outline-danger" title="Eliminar empleado">
+                    <i class="bi bi-trash"></i> Eliminar
                   </button>
                 </div>
               </td>

@@ -20,16 +20,14 @@ export class EmpleadoService {
     return this.http.get<any>(`${this.baseUrl}/${id}/`).pipe(map(this.mapFromApi));
   }
 
-  createEmpleado(empleado: Empleado): Observable<Empleado> {
-    return this.http
-      .post<any>(`${this.baseUrl}/`, this.mapToApi(empleado))
-      .pipe(map(this.mapFromApi));
+  createEmpleado(payload: any): Observable<any> {
+    // El payload ya viene con { persona: {...}, empleado: {...} }
+    return this.http.post<any>(`${this.baseUrl}/`, payload);
   }
 
-  updateEmpleado(empleado: Empleado): Observable<Empleado> {
-    return this.http
-      .put<any>(`${this.baseUrl}/${empleado.id_emp}/`, this.mapToApi(empleado))
-      .pipe(map(this.mapFromApi));
+  updateEmpleado(id: number, payload: any): Observable<any> {
+    // El payload ya viene con { persona: {...}, empleado: {...} }
+    return this.http.put<any>(`${this.baseUrl}/${id}/`, payload);
   }
 
   deleteEmpleado(id: number): Observable<void> {
@@ -43,9 +41,9 @@ export class EmpleadoService {
     cargo_id: api.cargo_id ?? api.cargo?.cargo_id,
     rol_id: api.rol_id ?? api.rol?.rol_id,
     hash_contra: api.hash_contra,
-    persona: api.documento,
-    cargo: api.cargo,
-    rol: api.rol,
+    persona: api.persona ?? api.documento,
+    cargo: api.cargo ? { ...api.cargo, cargo_nombre: api.cargo.cargo_nombre ?? api.cargo.nombre } : api.cargo,
+    rol: api.rol ? { ...api.rol, rol_nombre: api.rol.rol_nombre ?? api.rol.nombre } : api.rol,
   });
 
   private mapToApi = (empleado: Empleado) => ({

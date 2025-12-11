@@ -10,17 +10,115 @@
         </div>
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" #empleadoForm="ngForm">
+            <!-- Datos de Persona -->
+            <h5 class="mb-3 text-secondary"><i class="bi bi-person-circle me-2"></i>Datos Personales</h5>
+            
             <div class="mb-3">
               <label for="documento" class="form-label">Documento *</label>
               <input 
                 type="text" 
                 class="form-control" 
                 id="documento" 
-                [(ngModel)]="empleado.documento"
+                [(ngModel)]="persona.documento"
                 name="documento"
                 [disabled]="isEditMode"
                 required>
             </div>
+
+            <div class="mb-3">
+              <label for="tipo_doc_id" class="form-label">Tipo de Documento *</label>
+              <select 
+                class="form-select" 
+                id="tipo_doc_id" 
+                [(ngModel)]="persona.tipo_doc_id"
+                name="tipo_doc_id"
+                [disabled]="isEditMode"
+                required>
+                <option *ngFor="let tipo of tiposDocumento" [value]="tipo.tipo_doc_id">
+                  {{ tipo.tipo_doc_nombre }}
+                </option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre Completo *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="nombre" 
+                [(ngModel)]="persona.nombre"
+                name="nombre"
+                required>
+            </div>
+
+            <div class="mb-3">
+              <label for="correo" class="form-label">Correo Electrónico *</label>
+              <input 
+                type="email" 
+                class="form-control" 
+                id="correo" 
+                [(ngModel)]="persona.correo"
+                name="correo"
+                required>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="fecha_nac" class="form-label">Fecha de Nacimiento *</label>
+                <input 
+                  type="date" 
+                  class="form-control" 
+                  id="fecha_nac" 
+                  [ngModel]="persona.fecha_nac | date:'yyyy-MM-dd'"
+                  (ngModelChange)="persona.fecha_nac = $event"
+                  name="fecha_nac"
+                  [disabled]="isEditMode"
+                  required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="genero" class="form-label">Género *</label>
+                <select 
+                  class="form-select" 
+                  id="genero" 
+                  [(ngModel)]="persona.genero"
+                  name="genero"
+                  [disabled]="isEditMode"
+                  required>
+                  <option value="M">Masculino</option>
+                  <option value="F">Femenino</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="direccion" class="form-label">Dirección *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="direccion" 
+                [(ngModel)]="persona.direccion"
+                name="direccion"
+                required>
+            </div>
+
+            <div class="mb-3">
+              <label for="id_sede" class="form-label">Sede *</label>
+              <select 
+                class="form-select" 
+                id="id_sede" 
+                [(ngModel)]="persona.id_sede"
+                name="id_sede"
+                required>
+                <option *ngFor="let sede of sedes" [value]="sede.id_sede">
+                  {{ sede.nom_sede }}
+                </option>
+              </select>
+            </div>
+
+            <hr class="my-4">
+
+            <!-- Datos de Empleado -->
+            <h5 class="mb-3 text-secondary"><i class="bi bi-briefcase me-2"></i>Datos Laborales</h5>
 
             <div class="mb-3">
               <label for="id_dept" class="form-label">Departamento *</label>
@@ -30,7 +128,7 @@
                 [(ngModel)]="empleado.id_dept"
                 name="id_dept"
                 required>
-                <option [value]="dept.id_dept" *ngFor="let dept of departamentos">
+                <option *ngFor="let dept of departamentos" [value]="dept.id_dept">
                   {{ dept.nom_dept }}
                 </option>
               </select>
@@ -62,6 +160,23 @@
                   {{ rol.rol_nombre }}
                 </option>
               </select>
+            </div>
+
+            <div class="mb-3" *ngIf="!isEditMode">
+              <label for="hash_contra" class="form-label">Contraseña *</label>
+              <input 
+                type="password" 
+                class="form-control" 
+                id="hash_contra" 
+                [(ngModel)]="empleado.hash_contra"
+                name="hash_contra"
+                placeholder="Contraseña inicial"
+                [required]="!isEditMode">
+              <small class="form-text text-muted">Se usará para el acceso al sistema</small>
+            </div>
+
+            <div *ngIf="errorMessage" class="alert alert-danger">
+              {{ errorMessage }}
             </div>
 
             <div class="d-flex gap-2">

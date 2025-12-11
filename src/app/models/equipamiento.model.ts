@@ -5,5 +5,7 @@ export interface Equipamiento {
   estado: string;
   fecha_mantenimiento: Date;
   responsable: number;
+  departamento?: string;
+  responsable_nombre?: string;
   responsable_empleado?: any;
 }

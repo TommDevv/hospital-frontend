@@ -10,19 +10,116 @@
         </div>
         <div class="card-body">
           <form (ngSubmit)="onSubmit()" #pacienteForm="ngForm">
+            <h5 class="mb-3 text-secondary"><i class="bi bi-person-circle me-2"></i>Datos del Paciente</h5>
+            
             <div class="mb-3">
               <label for="documento" class="form-label">Documento *</label>
               <input 
                 type="text" 
                 class="form-control" 
                 id="documento" 
-                [(ngModel)]="paciente.documento"
+                [(ngModel)]="persona.documento"
                 name="documento"
+                [disabled]="isEditMode"
                 placeholder="Ingrese el documento"
                 required>
-              <small class="form-text text-muted">
-                Debe corresponder a una persona ya registrada en el sistema
-              </small>
+            </div>
+
+            <div class="mb-3">
+              <label for="tipo_doc_id" class="form-label">Tipo de Documento *</label>
+              <select 
+                class="form-select" 
+                id="tipo_doc_id" 
+                [(ngModel)]="persona.tipo_doc_id"
+                name="tipo_doc_id"
+                [disabled]="isEditMode"
+                required>
+                <option *ngFor="let tipo of tiposDocumento" [value]="tipo.tipo_doc_id">
+                  {{ tipo.tipo_doc_nombre }}
+                </option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="nombre" class="form-label">Nombre Completo *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="nombre" 
+                [(ngModel)]="persona.nombre"
+                name="nombre"
+                placeholder="Nombre completo del paciente"
+                required>
+            </div>
+
+            <div class="mb-3">
+              <label for="correo" class="form-label">Correo Electrónico *</label>
+              <input 
+                type="email" 
+                class="form-control" 
+                id="correo" 
+                [(ngModel)]="persona.correo"
+                name="correo"
+                placeholder="ejemplo@correo.com"
+                required>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="fecha_nac" class="form-label">Fecha de Nacimiento *</label>
+                <input 
+                  type="date" 
+                  class="form-control" 
+                  id="fecha_nac" 
+                  [ngModel]="persona.fecha_nac | date:'yyyy-MM-dd'"
+                  (ngModelChange)="persona.fecha_nac = $event"
+                  name="fecha_nac"
+                  [disabled]="isEditMode"
+                  required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="genero" class="form-label">Género *</label>
+                <select 
+                  class="form-select" 
+                  id="genero" 
+                  [(ngModel)]="persona.genero"
+                  name="genero"
+                  required>
+                  <option value="M">Masculino</option>
+                  <option value="F">Femenino</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="direccion" class="form-label">Dirección *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="direccion" 
+                [(ngModel)]="persona.direccion"
+                name="direccion"
+                placeholder="Dirección completa"
+                required>
+            </div>
+
+            <div class="mb-3">
+              <label for="id_sede" class="form-label">Sede de Atención *</label>
+              <select 
+                class="form-select" 
+                id="id_sede" 
+                [(ngModel)]="persona.id_sede"
+                name="id_sede"
+                [disabled]="isEditMode"
+                required>
+                <option *ngFor="let sede of sedes" [value]="sede.id_sede">
+                  {{ sede.nom_sede }}
+                </option>
+              </select>
+            </div>
+
+            <div *ngIf="errorMessage" class="alert alert-danger">
+              {{ errorMessage }}
             </div>
 
             <div class="d-flex gap-2">
