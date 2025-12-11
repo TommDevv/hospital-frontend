@@ -1,0 +1,107 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0"><i class="bi bi-gear-wide-connected me-2"></i>Nuevo Equipamiento</h4>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()" #equipamientoForm="ngForm">
+            <div class="mb-3">
+              <label for="nom_eq" class="form-label">Nombre del Equipo <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                class="form-control"
+                id="nom_eq"
+                name="nom_eq"
+                [(ngModel)]="equipamiento.nom_eq"
+                required
+                #nom_eq="ngModel"
+              />
+              <div class="text-danger" *ngIf="nom_eq.invalid && nom_eq.touched">
+                El nombre es obligatorio
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="id_dept" class="form-label">Departamento <span class="text-danger">*</span></label>
+              <select
+                class="form-select"
+                id="id_dept"
+                name="id_dept"
+                [(ngModel)]="equipamiento.id_dept"
+                required
+                #id_dept="ngModel"
+              >
+                <option [value]="0" disabled>Seleccione un departamento</option>
+                <option [value]="dept.id_dept" *ngFor="let dept of departamentos">
+                  {{ dept.nom_dept }}
+                </option>
+              </select>
+              <div class="text-danger" *ngIf="id_dept.invalid && id_dept.touched">
+                Debe seleccionar un departamento
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="estado" class="form-label">Estado</label>
+              <select
+                class="form-control"
+                id="estado"
+                name="estado"
+                [(ngModel)]="equipamiento.estado"
+              >
+                <option value="Operativo">Operativo</option>
+                <option value="En Mantenimiento">En Mantenimiento</option>
+                <option value="Fuera de Servicio">Fuera de Servicio</option>
+              </select>
+            </div>
+
+            <div class="mb-3">
+              <label for="fecha_mantenimiento" class="form-label">Fecha de Mantenimiento</label>
+              <input
+                type="date"
+                class="form-control"
+                id="fecha_mantenimiento"
+                name="fecha_mantenimiento"
+                [ngModel]="equipamiento.fecha_mantenimiento | date:'yyyy-MM-dd'"
+                (ngModelChange)="equipamiento.fecha_mantenimiento = $event"
+              />
+            </div>
+
+            <div class="mb-3">
+              <label for="responsable" class="form-label">Responsable (Empleado) <span class="text-danger">*</span></label>
+              <input
+                type="number"
+                class="form-control"
+                id="responsable"
+                name="responsable"
+                [(ngModel)]="equipamiento.responsable"
+                required
+                placeholder="ID del empleado responsable"
+                #responsable="ngModel"
+              />
+              <div class="text-danger" *ngIf="responsable.invalid && responsable.touched">
+                El responsable es obligatorio
+              </div>
+            </div>
+
+            <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+              {{ errorMessage }}
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+              <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="loading">
+                <i class="bi bi-x-circle me-2"></i>Cancelar
+              </button>
+              <button type="submit" class="btn btn-primary" [disabled]="loading || equipamientoForm.invalid">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                <i *ngIf="!loading" class="bi bi-check-circle me-2"></i>Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

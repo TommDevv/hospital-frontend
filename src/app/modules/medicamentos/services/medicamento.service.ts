@@ -16,11 +16,23 @@ export class MedicamentoService {
     return this.http.get<Medicamento[]>(`${this.baseUrl}/`);
   }
 
+  getMedicamentoById(id: number): Observable<Medicamento> {
+    return this.http.get<Medicamento>(`${this.baseUrl}/${id}/`);
+  }
+
   getStock(): Observable<Stock[]> {
     return this.http.get<Stock[]>(`${this.baseUrl}/stock/`);
   }
 
   createMedicamento(medicamento: Medicamento): Observable<Medicamento> {
     return this.http.post<Medicamento>(`${this.baseUrl}/`, medicamento);
+  }
+
+  updateMedicamento(medicamento: Medicamento): Observable<Medicamento> {
+    return this.http.put<Medicamento>(`${this.baseUrl}/${medicamento.cod_med}/`, medicamento);
+  }
+
+  deleteMedicamento(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}/`);
   }
 }

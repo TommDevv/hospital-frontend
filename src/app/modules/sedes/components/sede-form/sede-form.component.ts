@@ -14,7 +14,6 @@ export class SedeFormComponent implements OnInit {
     id_sede: 0,
     nom_sede: '',
     ciudad: '',
-    direccion: '',
     region_id: 1
   };
   regiones: Region[] = [];

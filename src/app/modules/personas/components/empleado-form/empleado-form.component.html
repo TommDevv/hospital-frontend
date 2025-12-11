@@ -23,14 +23,17 @@
             </div>
 
             <div class="mb-3">
-              <label for="id_dept" class="form-label">ID Departamento *</label>
-              <input 
-                type="number" 
-                class="form-control" 
+              <label for="id_dept" class="form-label">Departamento *</label>
+              <select 
+                class="form-select" 
                 id="id_dept" 
                 [(ngModel)]="empleado.id_dept"
                 name="id_dept"
                 required>
+                <option [value]="dept.id_dept" *ngFor="let dept of departamentos">
+                  {{ dept.nom_dept }}
+                </option>
+              </select>
             </div>
 
             <div class="mb-3">

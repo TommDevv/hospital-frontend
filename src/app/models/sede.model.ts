@@ -7,7 +7,6 @@ export interface SedeHospitalaria {
   id_sede: number;
   nom_sede: string;
   ciudad: string;
-  direccion: string;
   region_id: number;
   region?: Region;
 }

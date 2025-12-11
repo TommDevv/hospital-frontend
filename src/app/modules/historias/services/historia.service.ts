@@ -23,4 +23,12 @@ export class HistoriaService {
   createHistoria(historia: HistoriaClinica): Observable<HistoriaClinica> {
     return this.http.post<HistoriaClinica>(`${this.baseUrl}/`, historia);
   }
+
+  updateHistoria(historia: HistoriaClinica): Observable<HistoriaClinica> {
+    return this.http.put<HistoriaClinica>(`${this.baseUrl}/${historia.cod_hist}/`, historia);
+  }
+
+  deleteHistoria(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}/`);
+  }
 }

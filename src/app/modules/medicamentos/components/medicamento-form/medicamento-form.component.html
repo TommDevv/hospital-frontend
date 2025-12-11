@@ -1,0 +1,92 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0"><i class="bi bi-capsule me-2"></i>Nuevo Medicamento</h4>
+        </div>
+        <div class="card-body">
+          <form (ngSubmit)="onSubmit()" #medicamentoForm="ngForm">
+            <div class="mb-3">
+              <label for="nom_med" class="form-label">Nombre del Medicamento <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                class="form-control"
+                id="nom_med"
+                name="nom_med"
+                [(ngModel)]="medicamento.nom_med"
+                required
+                #nom_med="ngModel"
+              />
+              <div class="text-danger" *ngIf="nom_med.invalid && nom_med.touched">
+                El nombre es obligatorio
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="descripcion" class="form-label">Descripción</label>
+              <textarea
+                class="form-control"
+                id="descripcion"
+                name="descripcion"
+                rows="3"
+                [(ngModel)]="medicamento.descripcion"
+              ></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label for="unidad" class="form-label">Unidad <span class="text-danger">*</span></label>
+              <input
+                type="text"
+                class="form-control"
+                id="unidad"
+                name="unidad"
+                [(ngModel)]="medicamento.unidad"
+                required
+                placeholder="Ej: Tableta, Cápsula, Jarabe"
+                #unidad="ngModel"
+              />
+              <div class="text-danger" *ngIf="unidad.invalid && unidad.touched">
+                La unidad es obligatoria
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="proveedor_id" class="form-label">Proveedor <span class="text-danger">*</span></label>
+              <select
+                class="form-select"
+                id="proveedor_id"
+                name="proveedor_id"
+                [(ngModel)]="medicamento.proveedor_id"
+                required
+                #proveedor_id="ngModel"
+              >
+                <option [value]="0" disabled>Seleccione un proveedor</option>
+                <option [value]="proveedor.proveedor_id" *ngFor="let proveedor of proveedores">
+                  {{ proveedor.nombre }}
+                </option>
+              </select>
+              <div class="text-danger" *ngIf="proveedor_id.invalid && proveedor_id.touched">
+                Debe seleccionar un proveedor
+              </div>
+            </div>
+
+            <div class="alert alert-danger" *ngIf="errorMessage">
+              {{ errorMessage }}
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+              <button type="button" class="btn btn-secondary" (click)="onCancel()" [disabled]="loading">
+                <i class="bi bi-x-circle me-2"></i>Cancelar
+              </button>
+              <button type="submit" class="btn btn-primary" [disabled]="loading || medicamentoForm.invalid">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
+                <i *ngIf="!loading" class="bi bi-check-circle me-2"></i>Guardar
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -4,6 +4,7 @@ import { Empleado, Cargo, Rol } from '../../../../models/empleado.model';
 import { EmpleadoService } from '../../services/empleado.service';
 import { CargosService } from '../../services/cargos.service';
 import { RolesService } from '../../services/roles.service';
+import { DepartamentoService, Departamento } from '../../services/departamento.service';
 
 @Component({
   selector: 'app-empleado-form',
@@ -20,6 +21,7 @@ export class EmpleadoFormComponent implements OnInit {
   };
   cargos: Cargo[] = [];
   roles: Rol[] = [];
+  departamentos: Departamento[] = [];
   isEditMode: boolean = false;
   loading: boolean = false;
 
@@ -27,6 +29,7 @@ export class EmpleadoFormComponent implements OnInit {
     private empleadoService: EmpleadoService,
     private cargosService: CargosService,
     private rolesService: RolesService,
+    private departamentoService: DepartamentoService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -34,6 +37,7 @@ export class EmpleadoFormComponent implements OnInit {
   ngOnInit(): void {
     this.loadCargos();
     this.loadRoles();
+    this.loadDepartamentos();
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.isEditMode = true;
@@ -53,6 +57,14 @@ export class EmpleadoFormComponent implements OnInit {
     this.rolesService.getRoles().subscribe({
       next: (data) => {
         this.roles = data;
+      }
+    });
+  }
+
+  loadDepartamentos(): void {
+    this.departamentoService.getDepartamentos().subscribe({
+      next: (data) => {
+        this.departamentos = data;
       }
     });
   }
