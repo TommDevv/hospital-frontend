@@ -9,11 +9,12 @@ import { environment } from '../../../../environments/environment';
 })
 export class HistoriaService {
   private readonly baseUrl = `${environment.apiUrl}/historias`;
+  private readonly baseListUrl = `${environment.apiUrl}/historias-base`;
 
   constructor(private http: HttpClient) {}
 
   getHistorias(): Observable<HistoriaClinica[]> {
-    return this.http.get<HistoriaClinica[]>(`${this.baseUrl}/`);
+    return this.http.get<HistoriaClinica[]>(`${this.baseListUrl}/`);
   }
 
   getHistoriaById(id: number): Observable<HistoriaClinica> {
